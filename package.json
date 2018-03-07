@@ -19,5 +19,8 @@
   "homepage": "https://github.com/EveryMatrix/honeypot#readme",
   "devDependencies": {
     "babel-register": "^6.26.0"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
   }
 }
