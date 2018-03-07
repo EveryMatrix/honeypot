@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodes ./index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/EveryMatrix/honeypot/issues"
   },
-  "homepage": "https://github.com/EveryMatrix/honeypot#readme"
+  "homepage": "https://github.com/EveryMatrix/honeypot#readme",
+  "devDependencies": {
+    "babel-register": "^6.26.0"
+  }
 }
