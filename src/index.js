@@ -13,4 +13,4 @@ app.get('/log', (req, res) => {
     res.json(log)
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(80, () => console.log('Example app listening on port 3000!'));
