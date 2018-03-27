@@ -16,6 +16,15 @@
 <script>
     var logstr = [];
 
+    function getLogChain() {
+        var chain = [];
+        logstr.push(chain);
+        return function (m, l) {
+            chain.push({message: m, log: l});
+            document.getElementById("log").innerHTML = JSON.stringify(logstr, false, 4);
+        }
+    }
+
     function log(m, l) {
         logstr.push({message: m, log: l});
         document.getElementById("log").innerHTML = JSON.stringify(logstr, false, 4);
@@ -32,61 +41,37 @@
         });
     }
 
-    function sendLog(r) {
-        log("sendLog", r);
-        var body = JSON.stringify(r, false, 4);
-        document.getElementById("response").innerHTML = body;
-        jQuery.ajax({
-            url: "/add-log",
-            type: "POST",
-            method: "POST",
-            data: body,
-            body: body,
-            headers: {
-                "content-type": "application/json"
+    function doRequest(message, url) {
+        var chainLog = getLogChain();
+        chainLog("start: " + message, {url: url});
+
+        fetch(url).then(function success(r) {
+            if (r.ok) {
+                return r.text().then(function responseSuccess(reponse) {
+                    chainLog("success: " + message, reponse);
+                }, function responseError(err) {
+                    chainLog('response ok but failed: ' + message, err.error);
+                });
             }
+
+            chainLog('response not ok: ' + message, r.error);
+
+        }, function failedToConnect(err) {
+            chainLog('failed to connect: ' + message, err);
         });
     }
 
-    function fetchData(url, cb, ecb) {
-        jQuery.ajax({
-                url: url,
-                success: function (data) {
-                    log("success ajax", {url: url, data: data});
-                    cb(data);
-                },
-                error: function (request, status, error) {
-                    log("error ajax", {url: url, request: request, status: status, error: error});
-                    ecb({request: request, error: error, status: status});
-                }
+    doRequest("ts2 default", "https://api-dev.everymatrix.com/longpoll/open", true);
 
-            }
-        )
-    }
+    doRequest("ajax to self", "/demo");
 
+    doRequest("server-side ts2 fetch", "/server-side");
 
-    log("before ts ajax");
-    fetchData("https://api-dev.everymatrix.com/longpoll/open", sendLog, sendLog);
+    doRequest("proxy", "/proxy/longpoll/open");
 
-    log("before self ajax");
-    var selfCB = log.bind(null, "self ajax");
-    fetchData("demo", selfCB, selfCB);
-
-    log("before server-side ajax");
-    var serverSideCB = log.bind(null, "server-side ajax");
-    fetchData("/server-side", serverSideCB, serverSideCB);
-
-    log("before proxy ajax");
-    var proxyCB = log.bind(null, "proxy ajax");
-    fetchData("/proxy/longpoll/open", proxyCB, proxyCB);
-
-    log("before cats ajax");
-    var catsCB = log.bind(null, "cats ajax (other domain)");
-    fetchData("http://thecatapi.com/api/images/get?format=xml&results_per_page=1", catsCB, catsCB);
-
-
+    doRequest("different domain (cats) ", "http://thecatapi.com/api/images/get?format=xml&results_per_page=1");
 </script>
-<noscript>no js run</noscript>
+<noscript>noscript</noscript>
 
 </body>
 </html>
