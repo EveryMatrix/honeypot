@@ -31,16 +31,20 @@ app.get('/clean', (req, res) => {
     res.json({ok: true, cleaned: true});
 });
 
+app.get('/demo', (req, res) => {
+    res.json({message: 'works ok'});
+});
+
 app.post('/add-log', bodyParser.json(), (req, res) => {
     const q = {
         headers: req.headers,
         ts2Response: req.body,
     };
     addLog(q);
-
-    res.header('Content-type','application/json');
-    res.header('Charset','utf8');
-    res.send(req.query.callback + '('+ JSON.stringify(q) + ');');
+    //
+    // res.header('Content-type', 'application/json');
+    // res.header('Charset', 'utf8');
+    res.json({ok: true});
 });
 
 app.use(express.static('./src/public'));

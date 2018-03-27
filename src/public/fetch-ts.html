@@ -47,20 +47,29 @@
         });
     }
 
-    log('before ajax');
-    jQuery.ajax({
-            url: 'https://api-dev.everymatrix.com/longpoll/open',
-            success: (data) => {
-                log('success ajax', data);
-                sendLog(data);
-            },
-            error: (request, status, error) => {
-                log('error ajax', data);
-                sendLog({request, error, status});
-            }
+    function fetchData(url, cb, ecb) {
+        jQuery.ajax({
+                url,
+                success: (data) => {
+                    log('success ajax', {url, data});
+                    cb(data);
+                },
+                error: (request, status, error) => {
+                    log('error ajax', {url, request, status, error});
+                    ecb({request, error, status});
+                }
 
-        }
-    )
+            }
+        )
+    }
+
+
+    log('before ts ajax');
+    fetchData('https://api-dev.everymatrix.com/longpoll/open', sendLog, sendLog);
+    log('before self ajax');
+    const selfCB = log.bind(null, 'self ajax');
+    fetchData('demo', selfCB, selfCB);
+
     // throw new Error('cacat')
     // // .then((r) => {
     // //     console.sendLog('r', r);
