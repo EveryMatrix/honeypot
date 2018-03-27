@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>fetching ts2</title>
     <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
 </head>
 <body>
@@ -22,6 +22,16 @@
 
     }
 
+    if (window) {
+        window.addEventListener('error', (e) => {
+            log('window error', {
+                message: e.message,
+                stack: e.error.stack,
+                timestamp: parseInt(e.timeStamp, 10),
+            });
+        });
+    }
+
     function sendLog(r) {
         log('sendLog', r);
         const body = JSON.stringify(r, false, 4);
@@ -36,10 +46,10 @@
             },
         });
     }
+
     log('before ajax');
     jQuery.ajax({
             url: 'https://api-dev.everymatrix.com/longpoll/open',
-
             success: (data) => {
                 log('success ajax', data);
                 sendLog(data);
@@ -51,6 +61,7 @@
 
         }
     )
+    // throw new Error('cacat')
     // // .then((r) => {
     // //     console.sendLog('r', r);
     // //     if (!r.ok) {
