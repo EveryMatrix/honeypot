@@ -18,13 +18,13 @@
 
     function log(m, l) {
         logstr.push({message: m, log: l});
-        document.getElementById('log').innerHTML = JSON.stringify(logstr, false, 4);
+        document.getElementById("log").innerHTML = JSON.stringify(logstr, false, 4);
 
     }
 
     if (window) {
-        window.addEventListener('error', function (e) {
-            log('window error', {
+        window.addEventListener("error", function (e) {
+            log("window error", {
                 message: e.message,
                 stack: e.error.stack,
                 timestamp: parseInt(e.timeStamp, 10)
@@ -33,16 +33,15 @@
     }
 
     function sendLog(r) {
-        log('sendLog', r);
+        log("sendLog", r);
         var body = JSON.stringify(r, false, 4);
-        document.getElementById('response').innerHTML = body;
+        document.getElementById("response").innerHTML = body;
         jQuery.ajax({
-            url: '/add-sendLog',
-            type: 'POST',
+            url: "/add-sendLog",
+            type: "POST",
             data: body,
-            dataType: 'jsonp',
             headers: {
-                'content-type': 'application/json'
+                "content-type": "application/json"
             }
         });
     }
@@ -51,11 +50,11 @@
         jQuery.ajax({
                 url: url,
                 success: function (data) {
-                    log('success ajax', {url: url, data: data});
+                    log("success ajax", {url: url, data: data});
                     cb(data);
                 },
                 error: function (request, status, error) {
-                    log('error ajax', {url: url, request: request, status: status, error: error});
+                    log("error ajax", {url: url, request: request, status: status, error: error});
                     ecb({request: request, error: error, status: status});
                 }
 
@@ -64,15 +63,15 @@
     }
 
 
-    log('before ts ajax');
-    fetchData('https://api-dev.everymatrix.com/longpoll/open', sendLog, sendLog);
-    log('before self ajax');
-    var selfCB = log.bind(null, 'self ajax');
-    fetchData('demo', selfCB, selfCB);
+    log("before ts ajax");
+    fetchData("https://api-dev.everymatrix.com/longpoll/open", sendLog, sendLog);
+    log("before self ajax");
+    var selfCB = log.bind(null, "self ajax");
+    fetchData("demo", selfCB, selfCB);
 
-    // throw new Error('cacat')
+    // throw new Error("cacat")
     // // .then((r) => {
-    // //     console.sendLog('r', r);
+    // //     console.sendLog("r", r);
     // //     if (!r.ok) {
     // //         return {error: r.statusText, status: r.status};
     // //     }
@@ -82,14 +81,14 @@
     //     .then((r) => {
     //
     //     }).catch((e) => {
-    //     console.sendLog('e', e);
+    //     console.sendLog("e", e);
     //     e.then((er) => {
-    //         console.sendLog('er', er);
-    //         jQuery.ajax('/add-sendLog', {
-    //             method: 'POST',
+    //         console.sendLog("er", er);
+    //         jQuery.ajax("/add-sendLog", {
+    //             method: "POST",
     //             body: JSON.stringify({error: er.toString()}, false, 4),
     //             headers: {
-    //                 'content-type': 'application/json'
+    //                 "content-type": "application/json"
     //             },
     //         });
     //     })
