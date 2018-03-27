@@ -19,6 +19,7 @@
             url: '/add-log',
             type: 'POST',
             data: body,
+            dataType: 'jsonp',
             headers: {
                 'content-type': 'application/json'
             },
@@ -27,6 +28,7 @@
 
     jQuery.ajax({
             url: 'https://api-dev.everymatrix.com/longpoll/open',
+            dataType: 'jsonp',
             success: (data) => {
                 log(data);
             },

@@ -32,11 +32,15 @@ app.get('/clean', (req, res) => {
 });
 
 app.post('/add-log', bodyParser.json(), (req, res) => {
-    addLog({
+    const q = {
         headers: req.headers,
         ts2Response: req.body,
-    });
-    res.json({ok: true})
+    };
+    addLog(q);
+
+    res.header('Content-type','application/json');
+    res.header('Charset','utf8');
+    res.send(req.query.callback + '('+ JSON.stringify(q) + ');');
 });
 
 app.use(express.static('./src/public'));
