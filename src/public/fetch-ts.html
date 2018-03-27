@@ -37,7 +37,7 @@
         var body = JSON.stringify(r, false, 4);
         document.getElementById("response").innerHTML = body;
         jQuery.ajax({
-            url: "/add-sendLog",
+            url: "/add-log",
             type: "POST",
             data: body,
             headers: {
