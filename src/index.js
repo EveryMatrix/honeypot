@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const proxy = require('express-http-proxy');
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -34,6 +35,10 @@ app.get('/clean', (req, res) => {
 app.get('/demo', (req, res) => {
     res.json({message: 'works ok'});
 });
+
+app.use('/proxy', proxy('https://api-dev.everymatrix.com/longpoll/open', {
+    timeout: 2000000,
+}));
 
 app.post('/add-log', bodyParser.json(), (req, res) => {
     const q = {

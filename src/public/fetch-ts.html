@@ -65,9 +65,14 @@
 
     log("before ts ajax");
     fetchData("https://api-dev.everymatrix.com/longpoll/open", sendLog, sendLog);
+
     log("before self ajax");
     var selfCB = log.bind(null, "self ajax");
     fetchData("demo", selfCB, selfCB);
+
+    log("before proxy ajax");
+    var proxyCB = log.bind(null, "proxy ajax");
+    fetchData("/proxy", proxyCB, proxyCB);
 
     // throw new Error("cacat")
     // // .then((r) => {
