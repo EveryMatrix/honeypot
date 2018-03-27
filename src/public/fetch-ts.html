@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<pre id="response"></pre>
+<script>
+    fetch('https://api-dev.everymatrix.com/longpoll/open')
+        .then((r) => r.json())
+        .then((r) => {
+            const body = JSON.stringify(r, false, 4);
+            document.getElementById('response').innerHTML = body;
+            return fetch('/add-log', {
+                method: 'POST',
+                body: body,
+                headers: {
+                    'content-type': 'application/json'
+                },
+            });
+        });
+</script>
+
+</body>
+</html>
