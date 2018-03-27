@@ -74,31 +74,7 @@
     var proxyCB = log.bind(null, "proxy ajax");
     fetchData("/proxy", proxyCB, proxyCB);
 
-    // throw new Error("cacat")
-    // // .then((r) => {
-    // //     console.sendLog("r", r);
-    // //     if (!r.ok) {
-    // //         return {error: r.statusText, status: r.status};
-    // //     }
-    // //
-    // //     return r.json();
-    // // })
-    //     .then((r) => {
-    //
-    //     }).catch((e) => {
-    //     console.sendLog("e", e);
-    //     e.then((er) => {
-    //         console.sendLog("er", er);
-    //         jQuery.ajax("/add-sendLog", {
-    //             method: "POST",
-    //             body: JSON.stringify({error: er.toString()}, false, 4),
-    //             headers: {
-    //                 "content-type": "application/json"
-    //             },
-    //         });
-    //     })
-    //
-    // });
+
 </script>
 <noscript>no js run</noscript>
 
