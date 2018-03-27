@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const proxy = require('express-http-proxy');
+const fetch = require('node-fetch');
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -36,9 +37,20 @@ app.get('/demo', (req, res) => {
     res.json({message: 'works ok'});
 });
 
-app.use('/proxy', proxy('https://api-dev.everymatrix.com/longpoll/open', {
-    timeout: 2000000,
-}));
+app.use('/proxy', (req, res) => {
+    fetch("https://api-dev.everymatrix.com/longpoll/open")
+        .then((r) => {
+            if (!r.ok) {
+                return {error: r.statusText, status: r.status};
+            }
+
+            return r.json();
+        })
+        .then((r) => {
+            console.log("r", r);
+            res.json(r);
+        })
+});
 
 app.post('/add-log', bodyParser.json(), (req, res) => {
     const q = {
@@ -46,9 +58,6 @@ app.post('/add-log', bodyParser.json(), (req, res) => {
         ts2Response: req.body,
     };
     addLog(q);
-    //
-    // res.header('Content-type', 'application/json');
-    // res.header('Charset', 'utf8');
     res.json({ok: true});
 });
 
