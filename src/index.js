@@ -37,7 +37,8 @@ app.get('/demo', (req, res) => {
     res.json({message: 'works ok'});
 });
 
-app.use('/proxy', (req, res) => {
+app.use('/proxy', proxy("api-dev.everymatrix.com"));
+app.use('/server-side', (req, res) => {
     fetch("https://api-dev.everymatrix.com/longpoll/open")
         .then((r) => {
             if (!r.ok) {
