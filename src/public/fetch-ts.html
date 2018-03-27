@@ -14,22 +14,23 @@
 <h2>Log here:</h2>
 <pre id="log"></pre>
 <script>
-    var logstr = [];
+    var logstr = {};
 
-    function getLogChain() {
+    function getLogChain(m, mainRequest) {
         var chain = [];
-        logstr.push(chain);
-        return function (m, l) {
-            chain.push({message: m, log: l});
+        logstr[m] = (chain);
+        return function (message, l) {
+            chain.push({message: message, log: l});
             document.getElementById("log").innerHTML = JSON.stringify(logstr, false, 4);
+            if(mainRequest){
+                document.getElementById("response").innerHTML = JSON.stringify(chain, false, 4);
+
+            }
         }
     }
+    var log = getLogChain('windowErrors');
 
-    function log(m, l) {
-        logstr.push({message: m, log: l});
-        document.getElementById("log").innerHTML = JSON.stringify(logstr, false, 4);
 
-    }
 
     if (window) {
         window.addEventListener("error", function (e) {
@@ -41,23 +42,23 @@
         });
     }
 
-    function doRequest(message, url) {
-        var chainLog = getLogChain();
-        chainLog("start: " + message, {url: url});
+    function doRequest(message, url, mainRequest) {
+        var chainLog = getLogChain(message, mainRequest);
+        chainLog("start: " , {url: url});
 
         fetch(url).then(function success(r) {
             if (r.ok) {
                 return r.text().then(function responseSuccess(reponse) {
-                    chainLog("success: " + message, reponse);
+                    chainLog("success: ", reponse);
                 }, function responseError(err) {
-                    chainLog('response ok but failed: ' + message, err.error);
+                    chainLog('response ok but failed: ' , err.error);
                 });
             }
 
-            chainLog('response not ok: ' + message, r.error);
+            chainLog('response not ok: ', r.error);
 
         }, function failedToConnect(err) {
-            chainLog('failed to connect: ' + message, err);
+            chainLog('failed to connect: ', err);
         });
     }
 
