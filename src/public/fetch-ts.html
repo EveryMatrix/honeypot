@@ -14,7 +14,7 @@
 <h2>Log here:</h2>
 <pre id="log"></pre>
 <script>
-    const logstr = [];
+    var logstr = [];
 
     function log(m, l) {
         logstr.push({message: m, log: l});
@@ -34,7 +34,7 @@
 
     function sendLog(r) {
         log('sendLog', r);
-        const body = JSON.stringify(r, false, 4);
+        var body = JSON.stringify(r, false, 4);
         document.getElementById('response').innerHTML = body;
         jQuery.ajax({
             url: '/add-sendLog',
@@ -67,7 +67,7 @@
     log('before ts ajax');
     fetchData('https://api-dev.everymatrix.com/longpoll/open', sendLog, sendLog);
     log('before self ajax');
-    const selfCB = log.bind(null, 'self ajax');
+    var selfCB = log.bind(null, 'self ajax');
     fetchData('demo', selfCB, selfCB);
 
     // throw new Error('cacat')
