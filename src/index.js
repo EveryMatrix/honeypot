@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const app = express();
 
 const PORT = process.env.PORT || 8080;
-const log = [];
+let log = [];
 const logSize = 50;
 
 app.get('/log', (req, res) => {
@@ -24,6 +24,11 @@ function addLog(newLine) {
 app.get('/', (req, res) => {
     addLog(req.headers);
     res.json({ok: true})
+});
+
+app.get('/clean', (req, res) => {
+    log = [];
+    res.json({ok: true, cleaned: true});
 });
 
 app.post('/add-log', bodyParser.json(), (req, res) => {
