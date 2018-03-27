@@ -2,24 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>fetching ts2</title>
 </head>
 <body>
+<h1>Fetching ts2 data</h1>
 <pre id="response"></pre>
 <script>
-    fetch('https://api-dev.everymatrix.com/longpoll/open')
-        .then((r) => r.json())
+    fetch('https://ssapi-dev.everymatrix.com/longpoll/openasd')
+        .then((r) => {
+            console.log('r', r);
+            if (!r.ok) {
+                return {error: r.statusText, status: r.status};
+            }
+
+            return r.json();
+        })
         .then((r) => {
             const body = JSON.stringify(r, false, 4);
             document.getElementById('response').innerHTML = body;
-            return fetch('/add-log', {
+            fetch('/add-log', {
                 method: 'POST',
                 body: body,
                 headers: {
                     'content-type': 'application/json'
                 },
             });
+        }).catch((e) => {
+        console.log('e', e);
+        fetch('/add-log', {
+            method: 'POST',
+            body: JSON.stringify({error: e.toString()}, false, 4),
+            headers: {
+                'content-type': 'application/json'
+            },
         });
+    });
 </script>
 
 </body>
