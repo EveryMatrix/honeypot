@@ -25,6 +25,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-http-proxy": "^1.1.0",
+    "git-auto-pull": "^1.0.9",
     "node-fetch": "^2.1.2"
   }
 }
